@@ -1,0 +1,386 @@
+# This is the first piece of the code. It reads your phone and mail survey data and combines them together.
+
+# Before you start, you should know some basics about R.
+
+# You need install some packages, like the following 'sas7bdat' and 'maps'.
+
+# You should know how to set up the working directory and once you've set up the directory, create a folder called fes_var in that directory, and throw all of your mail data, from fes_var20151.sas7bdat to whatever you have into this folder. Similarly, create a folder called CHTS_VAR in that directory, and throw all of your phone data, from strat_var19821.sas7bdat to whatever you have into this folder.
+
+# You should also put the following files chts_n_2016.sas7bdat, chts_n_1982.sas7bdat, chts_n.sas7bdat, those for phone sample sizes, in your working directory.
+
+# After you finish this piece of code, you'll find a file called PhoneMail.RData in your working directory.
+
+
+library(sas7bdat)
+library(maps)
+
+rm(list=ls())
+
+
+
+mail1501 <- read.sas7bdat('fes_var/fes_var20151.sas7bdat')
+mail1502 <- read.sas7bdat('fes_var/fes_var20152.sas7bdat')
+mail1503 <- read.sas7bdat('fes_var/fes_var20153.sas7bdat')
+mail1504 <- read.sas7bdat('fes_var/fes_var20154.sas7bdat')
+mail1505 <- read.sas7bdat('fes_var/fes_var20155.sas7bdat')
+mail1506 <- read.sas7bdat('fes_var/fes_var20156.sas7bdat')
+mail1601 <- read.sas7bdat('fes_var/fes_var20161.sas7bdat')
+mail1602 <- read.sas7bdat('fes_var/fes_var20162.sas7bdat')
+mail1603 <- read.sas7bdat('fes_var/fes_var20163.sas7bdat')
+mail1604 <- read.sas7bdat('fes_var/fes_var20164.sas7bdat')
+mail1605 <- read.sas7bdat('fes_var/fes_var20165.sas7bdat')
+
+dim(mail1501)
+phone8201 <- read.sas7bdat('CHTS_VAR/strat_var19821.sas7bdat')
+phone8202 <- read.sas7bdat('CHTS_VAR/strat_var19822.sas7bdat')
+phone8203 <- read.sas7bdat('CHTS_VAR/strat_var19823.sas7bdat')
+phone8204 <- read.sas7bdat('CHTS_VAR/strat_var19824.sas7bdat')
+phone8205 <- read.sas7bdat('CHTS_VAR/strat_var19825.sas7bdat')
+phone8206 <- read.sas7bdat('CHTS_VAR/strat_var19826.sas7bdat')
+
+phone8301 <- read.sas7bdat('CHTS_VAR/strat_var19831.sas7bdat')
+phone8302 <- read.sas7bdat('CHTS_VAR/strat_var19832.sas7bdat')
+phone8303 <- read.sas7bdat('CHTS_VAR/strat_var19833.sas7bdat')
+phone8304 <- read.sas7bdat('CHTS_VAR/strat_var19834.sas7bdat')
+phone8305 <- read.sas7bdat('CHTS_VAR/strat_var19835.sas7bdat')
+phone8306 <- read.sas7bdat('CHTS_VAR/strat_var19836.sas7bdat')
+
+phone8401 <- read.sas7bdat('CHTS_VAR/strat_var19841.sas7bdat')
+phone8402 <- read.sas7bdat('CHTS_VAR/strat_var19842.sas7bdat')
+phone8403 <- read.sas7bdat('CHTS_VAR/strat_var19843.sas7bdat')
+phone8404 <- read.sas7bdat('CHTS_VAR/strat_var19844.sas7bdat')
+phone8405 <- read.sas7bdat('CHTS_VAR/strat_var19845.sas7bdat')
+phone8406 <- read.sas7bdat('CHTS_VAR/strat_var19846.sas7bdat')
+
+phone8501 <- read.sas7bdat('CHTS_VAR/strat_var19851.sas7bdat')
+phone8502 <- read.sas7bdat('CHTS_VAR/strat_var19852.sas7bdat')
+phone8503 <- read.sas7bdat('CHTS_VAR/strat_var19853.sas7bdat')
+phone8504 <- read.sas7bdat('CHTS_VAR/strat_var19854.sas7bdat')
+phone8505 <- read.sas7bdat('CHTS_VAR/strat_var19855.sas7bdat')
+phone8506 <- read.sas7bdat('CHTS_VAR/strat_var19856.sas7bdat')
+
+phone8601 <- read.sas7bdat('CHTS_VAR/strat_var19861.sas7bdat')
+phone8602 <- read.sas7bdat('CHTS_VAR/strat_var19862.sas7bdat')
+phone8603 <- read.sas7bdat('CHTS_VAR/strat_var19863.sas7bdat')
+phone8604 <- read.sas7bdat('CHTS_VAR/strat_var19864.sas7bdat')
+phone8605 <- read.sas7bdat('CHTS_VAR/strat_var19865.sas7bdat')
+phone8606 <- read.sas7bdat('CHTS_VAR/strat_var19866.sas7bdat')
+
+phone8701 <- read.sas7bdat('CHTS_VAR/strat_var19871.sas7bdat')
+phone8702 <- read.sas7bdat('CHTS_VAR/strat_var19872.sas7bdat')
+phone8703 <- read.sas7bdat('CHTS_VAR/strat_var19873.sas7bdat')
+phone8704 <- read.sas7bdat('CHTS_VAR/strat_var19874.sas7bdat')
+phone8705 <- read.sas7bdat('CHTS_VAR/strat_var19875.sas7bdat')
+phone8706 <- read.sas7bdat('CHTS_VAR/strat_var19876.sas7bdat')
+
+phone8801 <- read.sas7bdat('CHTS_VAR/strat_var19881.sas7bdat')
+phone8802 <- read.sas7bdat('CHTS_VAR/strat_var19882.sas7bdat')
+phone8803 <- read.sas7bdat('CHTS_VAR/strat_var19883.sas7bdat')
+phone8804 <- read.sas7bdat('CHTS_VAR/strat_var19884.sas7bdat')
+phone8805 <- read.sas7bdat('CHTS_VAR/strat_var19885.sas7bdat')
+phone8806 <- read.sas7bdat('CHTS_VAR/strat_var19886.sas7bdat')
+
+phone8901 <- read.sas7bdat('CHTS_VAR/strat_var19891.sas7bdat')
+phone8902 <- read.sas7bdat('CHTS_VAR/strat_var19892.sas7bdat')
+phone8903 <- read.sas7bdat('CHTS_VAR/strat_var19893.sas7bdat')
+phone8904 <- read.sas7bdat('CHTS_VAR/strat_var19894.sas7bdat')
+phone8905 <- read.sas7bdat('CHTS_VAR/strat_var19895.sas7bdat')
+phone8906 <- read.sas7bdat('CHTS_VAR/strat_var19896.sas7bdat')
+
+#phone9001 <- read.sas7bdat('CHTS_VAR/strat_var19901.sas7bdat')
+phone9002 <- read.sas7bdat('CHTS_VAR/strat_var19902.sas7bdat')
+phone9003 <- read.sas7bdat('CHTS_VAR/strat_var19903.sas7bdat')
+phone9004 <- read.sas7bdat('CHTS_VAR/strat_var19904.sas7bdat')
+phone9005 <- read.sas7bdat('CHTS_VAR/strat_var19905.sas7bdat')
+phone9006 <- read.sas7bdat('CHTS_VAR/strat_var19906.sas7bdat')
+
+phone9101 <- read.sas7bdat('CHTS_VAR/strat_var19911.sas7bdat')
+phone9102 <- read.sas7bdat('CHTS_VAR/strat_var19912.sas7bdat')
+phone9103 <- read.sas7bdat('CHTS_VAR/strat_var19913.sas7bdat')
+phone9104 <- read.sas7bdat('CHTS_VAR/strat_var19914.sas7bdat')
+phone9105 <- read.sas7bdat('CHTS_VAR/strat_var19915.sas7bdat')
+phone9106 <- read.sas7bdat('CHTS_VAR/strat_var19916.sas7bdat')
+
+phone9201 <- read.sas7bdat('CHTS_VAR/strat_var19921.sas7bdat')
+phone9202 <- read.sas7bdat('CHTS_VAR/strat_var19922.sas7bdat')
+phone9203 <- read.sas7bdat('CHTS_VAR/strat_var19923.sas7bdat')
+phone9204 <- read.sas7bdat('CHTS_VAR/strat_var19924.sas7bdat')
+phone9205 <- read.sas7bdat('CHTS_VAR/strat_var19925.sas7bdat')
+phone9206 <- read.sas7bdat('CHTS_VAR/strat_var19926.sas7bdat')
+
+phone9301 <- read.sas7bdat('CHTS_VAR/strat_var19931.sas7bdat')
+phone9302 <- read.sas7bdat('CHTS_VAR/strat_var19932.sas7bdat')
+phone9303 <- read.sas7bdat('CHTS_VAR/strat_var19933.sas7bdat')
+phone9304 <- read.sas7bdat('CHTS_VAR/strat_var19934.sas7bdat')
+phone9305 <- read.sas7bdat('CHTS_VAR/strat_var19935.sas7bdat')
+phone9306 <- read.sas7bdat('CHTS_VAR/strat_var19936.sas7bdat')
+
+phone9401 <- read.sas7bdat('CHTS_VAR/strat_var19941.sas7bdat')
+phone9402 <- read.sas7bdat('CHTS_VAR/strat_var19942.sas7bdat')
+phone9403 <- read.sas7bdat('CHTS_VAR/strat_var19943.sas7bdat')
+phone9404 <- read.sas7bdat('CHTS_VAR/strat_var19944.sas7bdat')
+phone9405 <- read.sas7bdat('CHTS_VAR/strat_var19945.sas7bdat')
+phone9406 <- read.sas7bdat('CHTS_VAR/strat_var19946.sas7bdat')
+
+phone9501 <- read.sas7bdat('CHTS_VAR/strat_var19951.sas7bdat')
+phone9502 <- read.sas7bdat('CHTS_VAR/strat_var19952.sas7bdat')
+phone9503 <- read.sas7bdat('CHTS_VAR/strat_var19953.sas7bdat')
+phone9504 <- read.sas7bdat('CHTS_VAR/strat_var19954.sas7bdat')
+phone9505 <- read.sas7bdat('CHTS_VAR/strat_var19955.sas7bdat')
+phone9506 <- read.sas7bdat('CHTS_VAR/strat_var19956.sas7bdat')
+
+phone9601 <- read.sas7bdat('CHTS_VAR/strat_var19961.sas7bdat')
+phone9602 <- read.sas7bdat('CHTS_VAR/strat_var19962.sas7bdat')
+phone9603 <- read.sas7bdat('CHTS_VAR/strat_var19963.sas7bdat')
+phone9604 <- read.sas7bdat('CHTS_VAR/strat_var19964.sas7bdat')
+phone9605 <- read.sas7bdat('CHTS_VAR/strat_var19965.sas7bdat')
+phone9606 <- read.sas7bdat('CHTS_VAR/strat_var19966.sas7bdat')
+
+phone9701 <- read.sas7bdat('CHTS_VAR/strat_var19971.sas7bdat')
+phone9702 <- read.sas7bdat('CHTS_VAR/strat_var19972.sas7bdat')
+phone9703 <- read.sas7bdat('CHTS_VAR/strat_var19973.sas7bdat')
+phone9704 <- read.sas7bdat('CHTS_VAR/strat_var19974.sas7bdat')
+phone9705 <- read.sas7bdat('CHTS_VAR/strat_var19975.sas7bdat')
+phone9706 <- read.sas7bdat('CHTS_VAR/strat_var19976.sas7bdat')
+
+phone9801 <- read.sas7bdat('CHTS_VAR/strat_var19981.sas7bdat')
+phone9802 <- read.sas7bdat('CHTS_VAR/strat_var19982.sas7bdat')
+phone9803 <- read.sas7bdat('CHTS_VAR/strat_var19983.sas7bdat')
+phone9804 <- read.sas7bdat('CHTS_VAR/strat_var19984.sas7bdat')
+phone9805 <- read.sas7bdat('CHTS_VAR/strat_var19985.sas7bdat')
+phone9806 <- read.sas7bdat('CHTS_VAR/strat_var19986.sas7bdat')
+
+phone9901 <- read.sas7bdat('CHTS_VAR/strat_var19991.sas7bdat')
+phone9902 <- read.sas7bdat('CHTS_VAR/strat_var19992.sas7bdat')
+phone9903 <- read.sas7bdat('CHTS_VAR/strat_var19993.sas7bdat')
+phone9904 <- read.sas7bdat('CHTS_VAR/strat_var19994.sas7bdat')
+phone9905 <- read.sas7bdat('CHTS_VAR/strat_var19995.sas7bdat')
+phone9906 <- read.sas7bdat('CHTS_VAR/strat_var19996.sas7bdat')
+
+phone0001 <- read.sas7bdat('CHTS_VAR/strat_var20001.sas7bdat')
+phone0002 <- read.sas7bdat('CHTS_VAR/strat_var20002.sas7bdat')
+phone0003 <- read.sas7bdat('CHTS_VAR/strat_var20003.sas7bdat')
+phone0004 <- read.sas7bdat('CHTS_VAR/strat_var20004.sas7bdat')
+phone0005 <- read.sas7bdat('CHTS_VAR/strat_var20005.sas7bdat')
+phone0006 <- read.sas7bdat('CHTS_VAR/strat_var20006.sas7bdat')
+
+phone0101 <- read.sas7bdat('CHTS_VAR/strat_var20011.sas7bdat')
+phone0102 <- read.sas7bdat('CHTS_VAR/strat_var20012.sas7bdat')
+phone0103 <- read.sas7bdat('CHTS_VAR/strat_var20013.sas7bdat')
+phone0104 <- read.sas7bdat('CHTS_VAR/strat_var20014.sas7bdat')
+phone0105 <- read.sas7bdat('CHTS_VAR/strat_var20015.sas7bdat')
+phone0106 <- read.sas7bdat('CHTS_VAR/strat_var20016.sas7bdat')
+
+phone0201 <- read.sas7bdat('CHTS_VAR/strat_var20021.sas7bdat')
+phone0202 <- read.sas7bdat('CHTS_VAR/strat_var20022.sas7bdat')
+phone0203 <- read.sas7bdat('CHTS_VAR/strat_var20023.sas7bdat')
+phone0204 <- read.sas7bdat('CHTS_VAR/strat_var20024.sas7bdat')
+phone0205 <- read.sas7bdat('CHTS_VAR/strat_var20025.sas7bdat')
+phone0206 <- read.sas7bdat('CHTS_VAR/strat_var20026.sas7bdat')
+
+phone0301 <- read.sas7bdat('CHTS_VAR/strat_var20031.sas7bdat')
+phone0302 <- read.sas7bdat('CHTS_VAR/strat_var20032.sas7bdat')
+phone0303 <- read.sas7bdat('CHTS_VAR/strat_var20033.sas7bdat')
+phone0304 <- read.sas7bdat('CHTS_VAR/strat_var20034.sas7bdat')
+phone0305 <- read.sas7bdat('CHTS_VAR/strat_var20035.sas7bdat')
+phone0306 <- read.sas7bdat('CHTS_VAR/strat_var20036.sas7bdat')
+
+phone0401 <- read.sas7bdat('CHTS_VAR/strat_var20041.sas7bdat')
+phone0402 <- read.sas7bdat('CHTS_VAR/strat_var20042.sas7bdat')
+phone0403 <- read.sas7bdat('CHTS_VAR/strat_var20043.sas7bdat')
+phone0404 <- read.sas7bdat('CHTS_VAR/strat_var20044.sas7bdat')
+phone0405 <- read.sas7bdat('CHTS_VAR/strat_var20045.sas7bdat')
+phone0406 <- read.sas7bdat('CHTS_VAR/strat_var20046.sas7bdat')
+
+phone0501 <- read.sas7bdat('CHTS_VAR/strat_var20051.sas7bdat')
+phone0502 <- read.sas7bdat('CHTS_VAR/strat_var20052.sas7bdat')
+phone0503 <- read.sas7bdat('CHTS_VAR/strat_var20053.sas7bdat')
+phone0504 <- read.sas7bdat('CHTS_VAR/strat_var20054.sas7bdat')
+phone0505 <- read.sas7bdat('CHTS_VAR/strat_var20055.sas7bdat')
+phone0506 <- read.sas7bdat('CHTS_VAR/strat_var20056.sas7bdat')
+
+phone0601 <- read.sas7bdat('CHTS_VAR/strat_var20061.sas7bdat')
+phone0602 <- read.sas7bdat('CHTS_VAR/strat_var20062.sas7bdat')
+phone0603 <- read.sas7bdat('CHTS_VAR/strat_var20063.sas7bdat')
+phone0604 <- read.sas7bdat('CHTS_VAR/strat_var20064.sas7bdat')
+phone0605 <- read.sas7bdat('CHTS_VAR/strat_var20065.sas7bdat')
+phone0606 <- read.sas7bdat('CHTS_VAR/strat_var20066.sas7bdat')
+
+phone0701 <- read.sas7bdat('CHTS_VAR/strat_var20071.sas7bdat')
+phone0702 <- read.sas7bdat('CHTS_VAR/strat_var20072.sas7bdat')
+phone0703 <- read.sas7bdat('CHTS_VAR/strat_var20073.sas7bdat')
+phone0704 <- read.sas7bdat('CHTS_VAR/strat_var20074.sas7bdat')
+phone0705 <- read.sas7bdat('CHTS_VAR/strat_var20075.sas7bdat')
+phone0706 <- read.sas7bdat('CHTS_VAR/strat_var20076.sas7bdat')
+
+phone0801 <- read.sas7bdat('CHTS_VAR/strat_var20081.sas7bdat')
+phone0802 <- read.sas7bdat('CHTS_VAR/strat_var20082.sas7bdat')
+phone0803 <- read.sas7bdat('CHTS_VAR/strat_var20083.sas7bdat')
+phone0804 <- read.sas7bdat('CHTS_VAR/strat_var20084.sas7bdat')
+phone0805 <- read.sas7bdat('CHTS_VAR/strat_var20085.sas7bdat')
+phone0806 <- read.sas7bdat('CHTS_VAR/strat_var20086.sas7bdat')
+
+phone0901 <- read.sas7bdat('CHTS_VAR/strat_var20091.sas7bdat')
+phone0902 <- read.sas7bdat('CHTS_VAR/strat_var20092.sas7bdat')
+phone0903 <- read.sas7bdat('CHTS_VAR/strat_var20093.sas7bdat')
+phone0904 <- read.sas7bdat('CHTS_VAR/strat_var20094.sas7bdat')
+phone0905 <- read.sas7bdat('CHTS_VAR/strat_var20095.sas7bdat')
+phone0906 <- read.sas7bdat('CHTS_VAR/strat_var20096.sas7bdat')
+
+phone1001 <- read.sas7bdat('CHTS_VAR/strat_var20101.sas7bdat')
+phone1002 <- read.sas7bdat('CHTS_VAR/strat_var20102.sas7bdat')
+phone1003 <- read.sas7bdat('CHTS_VAR/strat_var20103.sas7bdat')
+phone1004 <- read.sas7bdat('CHTS_VAR/strat_var20104.sas7bdat')
+phone1005 <- read.sas7bdat('CHTS_VAR/strat_var20105.sas7bdat')
+phone1006 <- read.sas7bdat('CHTS_VAR/strat_var20106.sas7bdat')
+
+phone1101 <- read.sas7bdat('CHTS_VAR/strat_var20111.sas7bdat')
+phone1102 <- read.sas7bdat('CHTS_VAR/strat_var20112.sas7bdat')
+phone1103 <- read.sas7bdat('CHTS_VAR/strat_var20113.sas7bdat')
+phone1104 <- read.sas7bdat('CHTS_VAR/strat_var20114.sas7bdat')
+phone1105 <- read.sas7bdat('CHTS_VAR/strat_var20115.sas7bdat')
+phone1106 <- read.sas7bdat('CHTS_VAR/strat_var20116.sas7bdat')
+
+phone1201 <- read.sas7bdat('CHTS_VAR/strat_var20121.sas7bdat')
+phone1202 <- read.sas7bdat('CHTS_VAR/strat_var20122.sas7bdat')
+phone1203 <- read.sas7bdat('CHTS_VAR/strat_var20123.sas7bdat')
+phone1204 <- read.sas7bdat('CHTS_VAR/strat_var20124.sas7bdat')
+phone1205 <- read.sas7bdat('CHTS_VAR/strat_var20125.sas7bdat')
+phone1206 <- read.sas7bdat('CHTS_VAR/strat_var20126.sas7bdat')
+
+phone1301 <- read.sas7bdat('CHTS_VAR/strat_var20131.sas7bdat')
+phone1302 <- read.sas7bdat('CHTS_VAR/strat_var20132.sas7bdat')
+phone1303 <- read.sas7bdat('CHTS_VAR/strat_var20133.sas7bdat')
+phone1304 <- read.sas7bdat('CHTS_VAR/strat_var20134.sas7bdat')
+phone1305 <- read.sas7bdat('CHTS_VAR/strat_var20135.sas7bdat')
+phone1306 <- read.sas7bdat('CHTS_VAR/strat_var20136.sas7bdat')
+
+phone1401 <- read.sas7bdat('CHTS_VAR/strat_var20141.sas7bdat')
+phone1402 <- read.sas7bdat('CHTS_VAR/strat_var20142.sas7bdat')
+phone1403 <- read.sas7bdat('CHTS_VAR/strat_var20143.sas7bdat')
+phone1404 <- read.sas7bdat('CHTS_VAR/strat_var20144.sas7bdat')
+phone1405 <- read.sas7bdat('CHTS_VAR/strat_var20145.sas7bdat')
+phone1406 <- read.sas7bdat('CHTS_VAR/strat_var20146.sas7bdat')
+
+phone1501 <- read.sas7bdat('CHTS_VAR/strat_var20151.sas7bdat')
+phone1502 <- read.sas7bdat('CHTS_VAR/strat_var20152.sas7bdat')
+phone1503 <- read.sas7bdat('CHTS_VAR/strat_var20153.sas7bdat')
+phone1504 <- read.sas7bdat('CHTS_VAR/strat_var20154.sas7bdat')
+phone1505 <- read.sas7bdat('CHTS_VAR/strat_var20155.sas7bdat')
+phone1506 <- read.sas7bdat('CHTS_VAR/strat_var20156.sas7bdat')
+phone1601 <- read.sas7bdat('CHTS_VAR/strat_var20161.sas7bdat')
+phone1602 <- read.sas7bdat('CHTS_VAR/strat_var20162.sas7bdat')
+phone1603 <- read.sas7bdat('CHTS_VAR/strat_var20163.sas7bdat')
+phone1604 <- read.sas7bdat('CHTS_VAR/strat_var20164.sas7bdat')
+phone1605 <- read.sas7bdat('CHTS_VAR/strat_var20165.sas7bdat')
+phone1606 <- read.sas7bdat('CHTS_VAR/strat_var20166.sas7bdat')
+
+colnames(phone9201)[2] <- 'WAVE'
+
+phone82 <- rbind(phone8201,phone8202,phone8203,phone8204,phone8205,phone8206)
+phone83 <- rbind(phone8301,phone8302,phone8303,phone8304,phone8305,phone8306)
+phone84 <- rbind(phone8401,phone8402,phone8403,phone8404,phone8405,phone8406)
+phone85 <- rbind(phone8501,phone8502,phone8503,phone8504,phone8505,phone8506)
+phone86 <- rbind(phone8601,phone8602,phone8603,phone8604,phone8605,phone8606)
+phone87 <- rbind(phone8701,phone8702,phone8703,phone8704,phone8705,phone8706)
+phone88 <- rbind(phone8801,phone8802,phone8803,phone8804,phone8805,phone8806)
+phone89 <- rbind(phone8901,phone8902,phone8903,phone8904,phone8905,phone8906)
+phone90 <- rbind(phone9002,phone9003,phone9004,phone9005,phone9006)
+phone91 <- rbind(phone9101,phone9102,phone9103,phone9104,phone9105,phone9106)
+phone92 <- rbind(phone9201,phone9202,phone9203,phone9204,phone9205,phone9206)
+phone93 <- rbind(phone9301,phone9302,phone9303,phone9304,phone9305,phone9306)
+phone94 <- rbind(phone9401,phone9402,phone9403,phone9404,phone9405,phone9406)
+phone95 <- rbind(phone9501,phone9502,phone9503,phone9504,phone9505,phone9506)
+phone96 <- rbind(phone9601,phone9602,phone9603,phone9604,phone9605,phone9606)
+phone97 <- rbind(phone9701,phone9702,phone9703,phone9704,phone9705,phone9706)
+phone98 <- rbind(phone9801,phone9802,phone9803,phone9804,phone9805,phone9806)
+phone99 <- rbind(phone9901,phone9902,phone9903,phone9904,phone9905,phone9906)
+phone00 <- rbind(phone0001,phone0002,phone0003,phone0004,phone0005,phone0006)
+phone01 <- rbind(phone0101,phone0102,phone0103,phone0104,phone0105,phone0106)
+phone02 <- rbind(phone0201,phone0202,phone0203,phone0204,phone0205,phone0206)
+phone03 <- rbind(phone0301,phone0302,phone0303,phone0304,phone0305,phone0306)
+phone04 <- rbind(phone0401,phone0402,phone0403,phone0404,phone0405,phone0406)
+phone05 <- rbind(phone0501,phone0502,phone0503,phone0504,phone0505,phone0506)
+phone06 <- rbind(phone0601,phone0602,phone0603,phone0604,phone0605,phone0606)
+phone07 <- rbind(phone0701,phone0702,phone0703,phone0704,phone0705,phone0706)
+phone08 <- rbind(phone0801,phone0802,phone0803,phone0804,phone0805,phone0806)
+phone09 <-rbind(phone0901,phone0902,phone0903,phone0904,phone0905,phone0906)
+phone10 <- rbind(phone1001,phone1002,phone1003,phone1004,phone1005,phone1006)
+phone11 <- rbind(phone1101,phone1102,phone1103,phone1104,phone1105,phone1106)
+phone12 <- rbind(phone1201,phone1202,phone1203,phone1204,phone1205,phone1206)
+phone13 <- rbind(phone1301,phone1302,phone1303,phone1304,phone1305,phone1306)
+phone14 <- rbind(phone1401,phone1402,phone1403,phone1404,phone1405,phone1406)
+phone15 <- rbind(phone1501,phone1502,phone1503,phone1504,phone1505,phone1506)
+phone16 <- rbind(phone1601,phone1602,phone1603,phone1604,phone1605,phone1606)
+
+colnames(phone82) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone83) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone84) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone85) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone86) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone87) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone88) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone89) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone90) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone91) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone92) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone93) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone94) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone95) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone96) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone97) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone98) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone99) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone00) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone01) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone02) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone03) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone04) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone05) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone06) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone07) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone08) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone09) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone10) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone11) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone12) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone13) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+colnames(phone14) <- c('year', 'wave', 'st', 'mode_fx', 'st_eff', 'st_var', 'cov_37')
+
+phone82to16 <- rbind(phone82, phone83, phone84, phone85, phone86, phone87, phone88, phone89, phone90, phone91, phone92, phone93, phone94, phone95, phone96, phone97, phone98, phone99, phone00, phone01, phone02, phone03, phone04, phone05, phone06, phone07, phone08, phone09, phone10, phone11, phone12, phone13, phone14, phone15, phone16)
+
+
+
+mail15 <- rbind(mail1501,mail1502,mail1503,mail1504,mail1505,mail1506)
+mail16 <- rbind(mail1601,mail1602,mail1603,mail1604,mail1605)
+mail15to16 <- rbind(mail15, mail16)
+
+
+
+phonesize <- read.sas7bdat('chts_n.sas7bdat')
+
+phonesize16 <- read.sas7bdat('chts_n_2016.sas7bdat')
+
+phonesize82 <- read.sas7bdat('chts_n_1982.sas7bdat')
+colnames(phonesize82)[1:2] <- c('year', 'wave')
+colnames(phonesize)[1:2] <- c('year', 'wave')
+phonesize <- rbind(phonesize82, phonesize, phonesize16)
+
+
+colnames(phonesize)[1:3] <- c('year', 'wave', 'nphone')
+
+
+
+phone82to16 <- merge(phone82to16, phonesize, all = T, by = c('year', 'st', 'wave'))
+
+phoneall <- na.omit(phone82to16)
+phoneall[,9] <- 'phone'
+colnames(phoneall)[c(5,6,8,9)] <- c('est', 'var', 'samplesize', 'survey')
+
+mailall <- mail15to16[mail15to16$sub_st==1,-c(4,8)]
+mailall[,9] <- 'mail'
+colnames(mailall)[c(5,6,7,9)] <- c('est', 'var', 'samplesize', 'survey')
+
+rm(list=setdiff(ls(),c('phoneall','mailall')))
+
+save.image('PhoneMail.RData')
