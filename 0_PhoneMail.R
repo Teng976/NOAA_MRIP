@@ -6,7 +6,7 @@
 
 # You should know how to set up the working directory and once you've set up the directory, create a folder called fes_var in that directory, and throw all of your mail data, from fes_var20151.sas7bdat to whatever you have into this folder. Similarly, create a folder called CHTS_VAR in that directory, and throw all of your phone data, from strat_var19821.sas7bdat to whatever you have into this folder.
 
-# You should also put the following files chts_n_2016.sas7bdat, chts_n_1982.sas7bdat, chts_n.sas7bdat, those for phone sample sizes, in your working directory.
+# You should also put the following files chts_n_2016.sas7bdat, chts_n_2016_56.sas7bdat, chts_n_1982.sas7bdat, chts_n.sas7bdat, those for phone sample sizes, in your working directory.
 
 # After you finish this piece of code, you'll find a file called PhoneMail.RData in your working directory.
 
@@ -360,11 +360,12 @@ mail15to16 <- rbind(mail15, mail16)
 phonesize <- read.sas7bdat('chts_n.sas7bdat')
 
 phonesize16 <- read.sas7bdat('chts_n_2016.sas7bdat')
+phonesize1656 <- read.sas7bdat('chts_n_2016_56.sas7bdat')
 
 phonesize82 <- read.sas7bdat('chts_n_1982.sas7bdat')
 colnames(phonesize82)[1:2] <- c('year', 'wave')
 colnames(phonesize)[1:2] <- c('year', 'wave')
-phonesize <- rbind(phonesize82, phonesize, phonesize16)
+phonesize <- rbind(phonesize82, phonesize, phonesize16, phonesize1656)
 
 
 colnames(phonesize)[1:3] <- c('year', 'wave', 'nphone')
